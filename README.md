@@ -6,7 +6,7 @@ A (currently) naive implementation of a Pomodoro style timer, written in Python.
 ![Work, you peon!](screenshot.png)
 
 ## Usage
-This script uses `paplay` to play a sound file after each Pomodoro stage finishes. This is optional; edit line 35 to better suit your system.
+This script optionally uses `paplay` to play a sound file after each Pomodoro stage finishes.
 
 
 ```bash
