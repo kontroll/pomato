@@ -67,6 +67,7 @@ number = [ # Stolen from tty-clock -- Could have been widened programmatically.
      ["██████", "██  ██", "██████", "██  ██", "██████"], # 8
      ["██████", "██  ██", "██████", "    ██", "██████"], # 9
      ["  ",     "██",     "  ",     "██",     "  "    ], # :
+     ["  ",     "  ",     "  ",     "  ",     "  "    ], # :, but empty.
      ["   ", " █ ", "   ", " █ ", "   "], # :-backup
 ]
 
@@ -75,8 +76,10 @@ def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
     for i in range(5):
         rval += " "*lpadding
         for character in timestamp:
-            if character == ":":
+            if character == ":" and not int(timestamp[-1])%2:
                 character = 10
+            elif character == ":" and int(timestamp[-1])%2:
+                character = 11
             else:
                 character = int(character)
             rval += " "*padding + number[character][i]
