@@ -15,10 +15,8 @@ long_pause      = int(kwargs.get("-l", "15"))*60+1
 time_format     = "%M:%S"
 
 def main(screen):
-    global duration
+    global duration, messages
     stage = 0
-    messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
-                4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
     xpad = curses.COLS//2-17
     ypad = curses.LINES//2-2
     screen.keypad(True)
@@ -50,6 +48,9 @@ def main(screen):
                     duration = work_duration
                 elif stage == 7:
                     duration = long_pause
+
+messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
+            4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
 
 number = [ # Stolen from tty-clock -- Could have been widened programmatically.
      ["██████", "██  ██", "██  ██", "██  ██", "██████"], # 0
