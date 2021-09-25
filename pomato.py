@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 
-import curses
-import time
-import sys
-import os
+import curses, time, sys, os
 from shutil import which
 
 try:
@@ -68,7 +65,6 @@ number = [ # Stolen from tty-clock -- Could have been widened programmatically.
      ["██████", "██  ██", "██████", "    ██", "██████"], # 9
      ["  ",     "██",     "  ",     "██",     "  "    ], # :
      ["  ",     "  ",     "  ",     "  ",     "  "    ], # :, but empty.
-     ["   ", " █ ", "   ", " █ ", "   "], # :-backup
 ]
 
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
