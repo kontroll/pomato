@@ -17,7 +17,8 @@ time_format     = "%M:%S"
 def main(screen):
     global duration
     stage = 0
-    message = "Zug zug!"
+    messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
+                4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
     xpad = curses.COLS//2-17
     ypad = curses.LINES//2-2
     screen.keypad(True)
@@ -27,11 +28,13 @@ def main(screen):
     while duration:
         duration -= 1
         screen.clear()
-        screen.addstr(1, 2, message)
+        screen.addstr(1, 2, messages[stage])
         screen.addstr(ypad, 0, draw_timestamp(time.strftime(time_format, time.gmtime(duration)), 1, xpad))
         screen.refresh()
 
         time.sleep(1)
+
+        if not duration and stage == 7: stage = -1
 
         while not duration:
             if which("paplay"): # Let's not just assume every system has `paplay`
@@ -43,14 +46,10 @@ def main(screen):
                 stage +=1
                 if   stage in [1, 3, 5]:
                     duration = pause
-                    message = "Work complete!"
                 elif stage % 2 == 0:
                     duration = work_duration
-                    message = "More work?!"
                 elif stage == 7:
-                    stage = 1
                     duration = long_pause
-                    message = "Work complete! Zzz..."
 
 number = [ # Stolen from tty-clock -- Could have been widened programmatically.
      ["██████", "██  ██", "██  ██", "██  ██", "██████"], # 0
