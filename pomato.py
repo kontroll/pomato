@@ -76,10 +76,8 @@ def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
     for i in range(5):
         rval += " "*lpadding
         for character in timestamp:
-            if character == ":" and not int(timestamp[-1])%2:
-                character = 10
-            elif character == ":" and int(timestamp[-1])%2:
-                character = 11
+            if character == ":":
+                character = 10 + int(timestamp[-1])%2
             else:
                 character = int(character)
             rval += " "*padding + number[character][i]
