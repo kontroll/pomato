@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import curses, time, sys, os
+import curses, time, sys, os, threading
 from shutil import which
 
 try:
@@ -35,8 +35,7 @@ def main(screen):
         if not duration and stage == 7: stage = -1
 
         while not duration:
-            if which("paplay"): # Let's not just assume every system has `paplay`
-                os.system("paplay " + os.path.dirname(os.path.realpath(__file__)) + "/alert.ogg")
+            threading.Thread(target=alert, daemon=True).start()
             action = screen.getkey()
             if action == "q":
                 break
@@ -76,6 +75,10 @@ def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
             rval += " "*padding + numbers[character][i]
         rval += "\n"
     return rval
+
+def alert():
+    if which("paplay"): # Let's not just assume every system has `paplay`
+        os.system("paplay " + os.path.dirname(os.path.realpath(__file__)) + os.path.sep + "alert.ogg")
 
 
 try:
