@@ -63,7 +63,7 @@ numbers = { # Stolen from tty-clock -- Could have been widened programmatically.
      "8": ["██████", "██  ██", "██████", "██  ██", "██████"],
      "9": ["██████", "██  ██", "██████", "    ██", "██████"],
      ":": ["  ",     "██",     "  ",     "██",     "  "    ],
-     " ": ["  ",     "  ",     "  ",     "  ",     "  "    ],
+     " ": ["  ",     "▒▒",     "  ",     "▒▒",     "  "    ],
 }
 
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
@@ -85,6 +85,3 @@ try:
     curses.wrapper(main)
 except KeyboardInterrupt:
     print("Time left when exiting:", time.strftime(time_format, time.gmtime(duration)))
-    pass
-finally:
-    pass
