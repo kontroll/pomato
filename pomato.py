@@ -5,7 +5,7 @@ from shutil import which
 
 try:
     kwargs          = {sys.argv[i]: sys.argv[i + 1] for i in range(1, len(sys.argv), 2)}
-except:
+except IndexError:
     sys.exit("Usage: pomato.py [-w 25] [-p 5] [-l 15]")
 
 work_duration   = int(float(kwargs.get("-w", "25"))*60)+1 # We're adding the extra seconds just for appearances' sake
@@ -51,7 +51,7 @@ def main(screen):
 messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
             4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
 
-numbers = { # Stolen from tty-clock -- Could have been widened programmatically.
+numbers = {                         # Adapted from tty-clock!
      "0": ["██████", "██  ██", "██  ██", "██  ██", "██████"],
      "1": ["    ██", "    ██", "    ██", "    ██", "    ██"],
      "2": ["██████", "    ██", "██████", "██    ", "██████"],
@@ -62,8 +62,8 @@ numbers = { # Stolen from tty-clock -- Could have been widened programmatically.
      "7": ["██████", "    ██", "    ██", "    ██", "    ██"],
      "8": ["██████", "██  ██", "██████", "██  ██", "██████"],
      "9": ["██████", "██  ██", "██████", "    ██", "██████"],
-     ":": ["  ",     "██",     "  ",     "██",     "  "    ],
-     " ": ["  ",     "▒▒",     "  ",     "▒▒",     "  "    ],
+     "d:": ["  ",     "██",     "  ",     "██",     "  "    ],
+     " ": ["  ",     "░░",     "  ",     "░░",     "  "    ],
 }
 
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
