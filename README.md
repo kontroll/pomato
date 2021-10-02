@@ -1,11 +1,13 @@
 # Pomato
 
-A (currently) naive implementation of a Pomodoro style timer, written in Python.
+A simple and straight-forward implementation of a Pomodoro style timer for the terminal.
 
 
 ![Work, you peon!](screenshot.png)
 
 ## Usage
+Quit out of Pomato using Ctrl+C any time while it is running, or by pressing `q` at the interval switch-over. Press any other key to proceed to the next interval. Your terminal window needs to be at least 8 rows tall and 34 columns wide.
+
 This script optionally uses `paplay` to play a sound file after each Pomodoro stage finishes.
 
 
@@ -15,3 +17,5 @@ $ python pomato [-w 25] [-p 5] [-l 15]
 -p    Specify a pause period
 -l    Specify a long pause period
 ```
+
+The command line arguments and default values are presented if you run Pomato with `-h` or `--help`.
