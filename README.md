@@ -12,10 +12,11 @@ This script optionally uses `paplay` to play a sound file after each Pomodoro st
 
 
 ```bash
-$ python pomato [-w 25] [-p 5] [-l 15]
+$ python pomato [-w 25] [-p 5] [-l 15] [-f tty-clock]
 -w    Specify a work period (in minutes)
 -p    Specify a pause period
 -l    Specify a long pause period
+-f    Choose a font; tty-clock (default) or braille-y
 ```
 
 The command line arguments and default values are presented if you run Pomato with `-h` or `--help`.

@@ -4,15 +4,16 @@ import curses, time, sys, os, threading
 from shutil import which
 
 try:
-    kwargs          = {sys.argv[i]: sys.argv[i + 1] for i in range(1, len(sys.argv), 2)}
+    kwargs    = {sys.argv[i]: sys.argv[i + 1] for i in range(1, len(sys.argv), 2)}
 except IndexError:
     sys.exit("Usage: pomato.py [-w 25] [-p 5] [-l 15]")
 
-work_duration   = int(float(kwargs.get("-w", "25"))*60)+1 # We're adding the extra seconds just for appearances' sake
-duration        = work_duration
-pause           = int(float(kwargs.get("-p", "5" ))*60)+1
-long_pause      = int(float(kwargs.get("-l", "15"))*60)+1
-time_format     = "%M:%S"
+work_duration = int(float(kwargs.get("-w", "25"))*60)+1 # We're adding the extra seconds just for appearances' sake
+duration      = work_duration
+pause         = int(float(kwargs.get("-p", "5" ))*60)+1
+long_pause    = int(float(kwargs.get("-l", "15"))*60)+1
+time_format   = "%M:%S"
+font          = kwargs.get("-f", "tty-clock")
 
 def main(screen):
     global duration, messages
@@ -51,7 +52,7 @@ def main(screen):
 messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
             4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
 
-numbers = {                         # Adapted from tty-clock!
+numbers = { "tty-clock": {          # Adapted from tty-clock!
      "0": ["██████", "██  ██", "██  ██", "██  ██", "██████"],
      "1": ["    ██", "    ██", "    ██", "    ██", "    ██"],
      "2": ["██████", "    ██", "██████", "██    ", "██████"],
@@ -64,15 +65,31 @@ numbers = {                         # Adapted from tty-clock!
      "9": ["██████", "██  ██", "██████", "    ██", "██████"],
      ":": ["  ",     "██",     "  ",     "██",     "  "    ],
      " ": ["  ",     "░░",     "  ",     "░░",     "  "    ],
+}}
+
+numbers["braille-y"] = {
+     "0": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
+     "1": ["    ⣴⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿"],
+     "2": [ "⣴⣿⣿⣿⣿⣦", "    ⣿⣿", "⣾⣿⣿⣿⣿⠟", "⣿⣿    ", "⣿⣿⣿⣿⣿⣿"],
+     "3": ["⣿⣿⣿⣿⣿⣦", "    ⣿⣿", "⢸⣿⣿⣿⣿⣯", "    ⣿⣿", "⣿⣿⣿⣿⣿⠟"],
+     "4": ["⣼⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⣿⣿⣿⣿⣿⣿", "    ⣿⣿", "    ⣿⣿"],
+     "5": ["⣿⣿⣿⣿⣿⣿", "⣿⣿    ", "⠻⣿⣿⣿⣿⣦", "    ⣿⣿", "⣿⣿⣿⣿⣿⠟"],
+     "6": ["⣴⣿⣿⣿⣿⣷", "⣿⣿    ", "⣿⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
+     "7": ["⣿⣿⣿⣿⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿"],
+     "8": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⣽⣿⣿⣿⣿⣯", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
+     "9": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⣿", "    ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
+     ":": ["  ",     "⣿⣿",     "  ",     "⣿⣿",     "  "    ],
+     " ": ["  ",     "⡪⡪",     "  ",     "⡪⡪",     "  "    ],
 }
 
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
+    global font
     rval = ""
     for i in range(5):
         rval += " "*lpadding
         for character in timestamp:
             if character == ":" and int(timestamp[-1])%2 == 1: character = " "
-            rval += " "*padding + numbers[character][i]
+            rval += " "*padding + numbers[font][character][i]
         rval += "\n"
     return rval
 
