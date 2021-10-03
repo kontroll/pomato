@@ -2,11 +2,12 @@
 
 import curses, time, sys, os, threading
 from shutil import which
+from fonts import numbers
 
 try:
     kwargs    = {sys.argv[i]: sys.argv[i + 1] for i in range(1, len(sys.argv), 2)}
 except IndexError:
-    sys.exit("Usage: pomato.py [-w 25] [-p 5] [-l 15]")
+    sys.exit("Usage: pomato.py [-w 25] [-p 5] [-l 15] [-f tty-clock]\nSet any number of options, in any order.")
 
 work_duration = int(float(kwargs.get("-w", "25"))*60)+1 # We're adding the extra seconds just for appearances' sake
 duration      = work_duration
@@ -49,38 +50,10 @@ def main(screen):
                 elif stage == 7:
                     duration = long_pause
 
+
 messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
             4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
 
-numbers = { "tty-clock": {          # Adapted from tty-clock!
-     "0": ["██████", "██  ██", "██  ██", "██  ██", "██████"],
-     "1": ["    ██", "    ██", "    ██", "    ██", "    ██"],
-     "2": ["██████", "    ██", "██████", "██    ", "██████"],
-     "3": ["██████", "    ██", "██████", "    ██", "██████"],
-     "4": ["██  ██", "██  ██", "██████", "    ██", "    ██"],
-     "5": ["██████", "██    ", "██████", "    ██", "██████"],
-     "6": ["██████", "██    ", "██████", "██  ██", "██████"],
-     "7": ["██████", "    ██", "    ██", "    ██", "    ██"],
-     "8": ["██████", "██  ██", "██████", "██  ██", "██████"],
-     "9": ["██████", "██  ██", "██████", "    ██", "██████"],
-     ":": ["  ",     "██",     "  ",     "██",     "  "    ],
-     " ": ["  ",     "░░",     "  ",     "░░",     "  "    ],
-}}
-
-numbers["braille-y"] = {
-     "0": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
-     "1": ["    ⣴⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿"],
-     "2": [ "⣴⣿⣿⣿⣿⣦", "    ⣿⣿", "⣾⣿⣿⣿⣿⠟", "⣿⣿    ", "⣿⣿⣿⣿⣿⣿"],
-     "3": ["⣿⣿⣿⣿⣿⣦", "    ⣿⣿", "⢸⣿⣿⣿⣿⣯", "    ⣿⣿", "⣿⣿⣿⣿⣿⠟"],
-     "4": ["⣼⣿  ⣿⣿", "⣿⣿  ⣿⣿", "⣿⣿⣿⣿⣿⣿", "    ⣿⣿", "    ⣿⣿"],
-     "5": ["⣿⣿⣿⣿⣿⣿", "⣿⣿    ", "⠻⣿⣿⣿⣿⣦", "    ⣿⣿", "⣿⣿⣿⣿⣿⠟"],
-     "6": ["⣴⣿⣿⣿⣿⣷", "⣿⣿    ", "⣿⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
-     "7": ["⣿⣿⣿⣿⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿", "    ⣿⣿"],
-     "8": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⣽⣿⣿⣿⣿⣯", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
-     "9": ["⣴⣿⣿⣿⣿⣦", "⣿⣿  ⣿⣿", "⠻⣿⣿⣿⣿⣿", "    ⣿⣿", "⠻⣿⣿⣿⣿⠟"],
-     ":": ["  ",     "⣿⣿",     "  ",     "⣿⣿",     "  "    ],
-     " ": ["  ",     "⡪⡪",     "  ",     "⡪⡪",     "  "    ],
-}
 
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
     global font
@@ -93,9 +66,10 @@ def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
         rval += "\n"
     return rval
 
+
 def alert():
     if which("paplay"): # Let's not just assume every system has `paplay`
-        os.system("paplay " + os.path.dirname(os.path.realpath(__file__)) + os.path.sep + "alert.ogg")
+        os.system("paplay " + os.path.dirname(__file__) + os.path.sep + "alert.ogg")
 
 
 try:
