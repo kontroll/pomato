@@ -15,9 +15,12 @@ pause         = int(float(kwargs.get("-p", "5" ))*60)+1
 long_pause    = int(float(kwargs.get("-l", "15"))*60)+1
 time_format   = "%M:%S"
 font          = kwargs.get("-f", "tty-clock")
+messages      = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
+                 4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
+
 
 def main(screen):
-    global duration, messages
+    global duration
     stage = 0
     xpad = curses.COLS//2-17
     ypad = curses.LINES//2-2
@@ -51,10 +54,6 @@ def main(screen):
                     duration = long_pause
 
 
-messages = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
-            4: "Work work!", 5: "Break time", 6: "Worky", 7: "Long break! :)"}
-
-
 def draw_timestamp(timestamp="00:00", padding=0, lpadding=0):
     global font
     rval = ""
@@ -71,8 +70,8 @@ def alert():
     if which("paplay"): # Let's not just assume every system has `paplay`
         os.system("paplay " + os.path.dirname(__file__) + os.path.sep + "alert.ogg")
 
-
-try:
-    curses.wrapper(main)
-except KeyboardInterrupt:
-    print("Time left when exiting:", time.strftime(time_format, time.gmtime(duration)))
+if __name__ == "__main__":
+    try:
+        curses.wrapper(main)
+    except KeyboardInterrupt:
+        print("Time left when exiting:", time.strftime(time_format, time.gmtime(duration)))
