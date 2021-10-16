@@ -9,10 +9,10 @@ try:
 except IndexError:
     sys.exit("Usage: pomato.py [-w 25] [-p 5] [-l 15] [-f tty-clock]\nSet any number of options, in any order.")
 
-work_duration = int(float(kwargs.get("-w", "25"))*60)+1 # We're adding the extra seconds just for appearances' sake
+work_duration = int(kwargs.get("-w", "25"))*60+1 # We're adding the extra seconds just for appearances' sake
 duration      = work_duration
-pause         = int(float(kwargs.get("-p", "5" ))*60)+1
-long_pause    = int(float(kwargs.get("-l", "15"))*60)+1
+pause         = int(kwargs.get("-p", "5" ))*60+1
+long_pause    = int(kwargs.get("-l", "15"))*60+1
 time_format   = "%M:%S"
 font          = kwargs.get("-f", "tty-clock")
 messages      = {0: "First work period!", 1: "Short break!", 2: "More work", 3: "Take a break!",
